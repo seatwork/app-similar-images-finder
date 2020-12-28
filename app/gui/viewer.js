@@ -14,7 +14,9 @@ class Viewer {
         this.viewer.onclick = e => {
             if (!this.image.contains(e.target)) this.close()
         }
-
+        this.viewer.ondblclick = () => {
+            this.close()
+        }
         document.addEventListener('keydown', e => {
             if (!this.isOpened) return
             if (e.keyCode === 27) { // esc
