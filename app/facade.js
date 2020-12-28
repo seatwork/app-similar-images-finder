@@ -22,7 +22,7 @@ module.exports = class {
     loadImages() {
         const time = Date.now()
         this.files = readDir(this.path, this.recursion)
-        this.files = this.files.filter(file => /\.(bmp|jpg|jpeg|png|webp)$/.test(file.path))
+        this.files = this.files.filter(file => /\.(bmp|jpg|jpeg|png|webp)$/i.test(file.path))
         console.log(`Images loaded in ${ Date.now() - time } ms`)
     }
 
