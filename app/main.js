@@ -8,66 +8,59 @@
 const electron = require('electron')
 const path = require('path')
 
-const icon = path.join(__dirname, 'assets/logo.png')
-const indexPage = path.join(__dirname, 'gui/index.html')
-const preload = path.join(__dirname, 'gui/preload.js')
-
-/* --------------------------------------------------------
- * Create Main Window
- * ----------------------------------------------------- */
-let mainWindow
-
-function createWindow() {
-    // Hide the menu of application
-    electron.Menu.setApplicationMenu(null)
-
-    // Create the browser window.
-    mainWindow = new electron.BrowserWindow({
-        width: 800, // Make sure the aspect ratio of video is 16:9
-        height: 500,
-        icon: icon,
-        webPreferences: {
-            nodeIntegration: true, // Make sure integrate node in renderer.js
-            enableRemoteModule: true
-        }
-    })
-
-    // Open the DevTools.
-    // mainWindow.webContents.openDevTools()
-
-    // and load the main.html of the app.
-    mainWindow.loadFile(indexPage)
-
-    // Emitted when the window is closed.
-    mainWindow.on('closed', function() {
-        // Dereference the window object, usually you would store windows
-        // in an array if your app supports multi windows, this is the time
-        // when you should delete the corresponding element.
-        mainWindow = null
-    })
-}
-
-/* --------------------------------------------------------
- * Init Application Instance
- * ----------------------------------------------------- */
+const mainPage = path.join(__dirname, 'gui/main.html')
+const icon = path.join(__dirname, 'assets/icon.png')
 
 const app = electron.app
 const gotTheLock = app.requestSingleInstanceLock()
 
-if (!gotTheLock) { app.quit() } else {
+let mainWindow = null
 
-    // Someone tried to run a second instance, we should focus our window.
-    app.on('second-instance', (event, commandLine, workingDirectory) => {
-        if (mainWindow) {
-            if (mainWindow.isMinimized()) mainWindow.restore()
-            mainWindow.focus()
-        }
-    })
+if (!gotTheLock) { app.quit() } else {
 
     // This method will be called when Electron has finished
     // initialization and is ready to create browser windows.
     // Some APIs can only be used after this event occurs.
-    app.on('ready', createWindow)
+    app.on('ready', function createWindow() {
+        // Hide the menu of application
+        electron.Menu.setApplicationMenu(null)
+
+        // Create the browser window.
+        mainWindow = new electron.BrowserWindow({
+            width: 800,
+            height: 500,
+            icon: icon,
+            webPreferences: {
+                enableRemoteModule: true,
+                nodeIntegration: true
+            }
+        })
+
+        // Open the DevTools.
+        // mainWindow.webContents.openDevTools()
+
+        // and load the main.html of the app.
+        mainWindow.loadFile(mainPage)
+
+        // Emitted when the window is closed.
+        mainWindow.on('closed', function() {
+            // Dereference the window object, usually you would store windows
+            // in an array if your app supports multi windows, this is the time
+            // when you should delete the corresponding element.
+            mainWindow = null
+        })
+    })
+
+    // Someone tried to run a second instance, we should focus our window.
+    app.on('second-instance', (event, commandLine, workingDirectory) => {
+        if (mainWindow) {
+            if (mainWindow.isMinimized()) {
+                mainWindow.restore()
+            } else {
+                mainWindow.focus()
+            }
+        }
+    })
 
     // Quit when all windows are closed.
     app.on('window-all-closed', function() {

@@ -28,3 +28,22 @@ exports.readDir = function(dir, recursion = false) {
     }
     return result
 }
+
+/**
+ * 字节数格式化
+ *
+ * @param Number bytes
+ * @return String
+ */
+exports.formatBytes = function(bytes) {
+    const units = ['B', 'K', 'M', 'G', 'T']
+    let index = 0
+    bytes = parseFloat(bytes)
+    while (Math.abs(bytes) >= 1024) {
+        bytes = bytes / 1024
+        index++
+        if (index === units.length - 1) break
+    }
+    bytes = index > 0 ? bytes.toFixed(index - 1) : bytes
+    return parseFloat(bytes) + units[index]
+}
