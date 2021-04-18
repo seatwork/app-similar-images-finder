@@ -1,6 +1,6 @@
 {
     "name": "similar-images-finder",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Find similar images with multiple algorithms",
     "author": "Ai Chen <nobody@cloudseat.net>",
     "copyright": "Copyright (c) 2020, Cloudseat",

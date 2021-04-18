@@ -7,7 +7,7 @@ class Viewer {
 
         PanZoom('.viewer img', {
             minScale: 0.2,
-            maxScale: 10,
+            maxScale: 30,
             increment: 0.1
         })
 
